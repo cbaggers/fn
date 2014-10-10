@@ -112,3 +112,7 @@
      (multiple-value-call function
        (values-list rest-of-the-args)
        (values-list args) )))
+
+;; (defun λ+ (&rest functions)
+;;   "Compose functions"
+;;   )
