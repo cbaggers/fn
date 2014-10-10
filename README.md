@@ -10,7 +10,7 @@ A couple of lambda shorthand macros. Their goal is to be used in cases where the
     (fn% (subseq %@ 0 2))  -->  (lambda (&rest %@) (subseq %@ 0 2))
 
 
-Next we have the λ macro. This is meant to be equivilent to clojures #(+ % %1) shorthand syntax for lambdas. However I am REALLY adverse to adding reader macros unless I absolutely have to. I know in this case it means that the function name is the second symbol in the form which is a bit icky..but given λ is a small and obvious symbol I havent found it hurts the speed I mentally parse my code.
+Next we have the λ macro. This is meant to be equivilent to clojures `#(+ % %1)` shorthand syntax for lambdas. However I am REALLY adverse to adding reader macros unless I absolutely have to. I know in this case it means that the function name is the second symbol in the form which is a bit icky..but given λ is a small and obvious symbol I havent found it hurts the speed I mentally parse my code.
 
     (λ + % %)  -->  (lambda (%) (+ % %)) 
 
@@ -24,8 +24,10 @@ For those who like the look of 'λ' in their code and want to use it for regular
     (λ (x y) (+ x y))  -->  (lambda (x y) (+ x y))
 
 
-Finally fn_, fn_r, λ_ and λ_r are functions for partial application
+Finally `fn_`, `fn_r`, `λ_` and `λ_r` are functions for partial application
         
+Emacs
+-----
 If you are using emacs and want Meta-l to write the λ symbol, add the following to your .emacs file
 
     (global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))
