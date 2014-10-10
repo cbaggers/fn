@@ -31,10 +31,18 @@
                               nums))))))
 
 (defmacro fn% (&body body)
-  (let ((args (sort (remove-duplicates (get-%-symbs body)) 
-                    (lambda (x y) (< (%-arg-num x) (%-arg-num y))))))
+  (let* ((raw-args (get-%-symbs body))
+         (at-form (find "%@" raw-args :key #'symbol-name :test #'equal))
+         (raw-args (remove "%@" raw-args :key #'symbol-name :test #'equal))
+         (args (sort (remove-duplicates raw-args) 
+                     (lambda (x y) (< (%-arg-num x) (%-arg-num y))))))
     (if (sequential (sort (remove-duplicates (mapcar #'%-arg-num args)) #'<))
-        `(lambda ,args ,@body)
+        (if at-form
+            (if args
+                `(lambda (&rest ,at-form)
+                   (destructuring-bind ,args ,at-form ,@body))
+                `(lambda (&rest ,at-form) ,@body))
+            `(lambda ,args ,@body))
         (error "non sequential args"))))
 
 (defmacro λ (&body body) 
