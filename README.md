@@ -15,7 +15,7 @@ Next we have the λ macro. This is meant to be equivilent to clojures #(+ % %1) 
     (λ + % %1)  -->  (lambda (% %1) (+ % %1))
 
 
-Finally, for those who like the look of 'λ' in their code and want to use it for regular lambdas, it the second element of the λ form is a list the form adheres to normal lambda syntax and structure.
+Finally, for those who like the look of 'λ' in their code and want to use it for regular lambdas, if the second element of the λ form is a list then the form adheres to normal lambda syntax and structure.
 
     (λ (x y) (+ x y))  -->  (lambda (x y) (+ x y))
 
