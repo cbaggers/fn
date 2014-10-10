@@ -1,5 +1,6 @@
 ;;;; package.lisp
 
 (defpackage #:fn_
-  (:use #:cl))
+  (:use #:cl)
+  (:export :λ :fn%))
 
