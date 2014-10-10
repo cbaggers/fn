@@ -15,10 +15,13 @@ Next we have the λ macro. This is meant to be equivilent to clojures #(+ % %1) 
     (λ + % %1)  -->  (lambda (% %1) (+ % %1))
 
 
-Finally, for those who like the look of 'λ' in their code and want to use it for regular lambdas, if the second element of the λ form is a list then the form adheres to normal lambda syntax and structure.
+For those who like the look of 'λ' in their code and want to use it for regular lambdas, if the second element of the λ form is a list then the form adheres to normal lambda syntax and structure.
 
     (λ (x y) (+ x y))  -->  (lambda (x y) (+ x y))
 
+
+Finally fn_, fn_r, λ_ and λ_r are functions for partial application
+        
 If you are using emacs and want Meta-l to write the λ symbol, add the following to your .emacs file
 
     (global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))

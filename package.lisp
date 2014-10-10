@@ -2,5 +2,5 @@
 
 (defpackage #:fn_
   (:use #:cl)
-  (:export :λ :fn%))
+  (:export :fn% :fn_ :λ :λ_))
 
