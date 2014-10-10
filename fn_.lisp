@@ -16,7 +16,7 @@
 
 (defun get-%-symbs (form)
   (remove-if (lambda (x) (not (eql #\% (aref (format nil "~a" x) 0))))
-             (alexandria:flatten form)))
+             (flatten form)))
 
 (defun %-arg-num (arg)
   (let ((name (symbol-name arg)))
