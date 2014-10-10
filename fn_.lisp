@@ -14,9 +14,14 @@
       (traverse tree))
     (nreverse list)))
 
+(defun walk-for-% (form)
+  (cond ((atom form) (when (eql #\% (aref (format nil "~a" form) 0))
+                       form))
+        ((eql (first form) 'quote) nil)
+        (t (remove nil (mapcar #'walk-for-% form)))))
+
 (defun get-%-symbs (form)
-  (remove-if (lambda (x) (not (eql #\% (aref (format nil "~a" x) 0))))
-             (flatten form)))
+  (flatten (walk-for-% (macroexpand-dammit:macroexpand-dammit form))))
 
 (defun %-arg-num (arg)
   (let ((name (symbol-name arg)))
