@@ -113,6 +113,30 @@
        (values-list rest-of-the-args)
        (values-list args) )))
 
-;; (defun λ+ (&rest functions)
-;;   "Compose functions"
-;;   )
+(defun fn+ (function &rest more-functions)
+  "Returns a function composed of FUNCTION and MORE-FUNCTIONS that applies its
+arguments to to each in turn, starting from the rightmost of MORE-FUNCTIONS,
+and then calling the next one with the primary value of the last."
+  (declare (optimize (speed 3) (safety 1) (debug 1)))
+  (reduce (lambda (f g)
+            (lambda (&rest arguments)
+              (declare (dynamic-extent arguments))
+              (funcall f (apply g arguments))))
+          more-functions
+          :initial-value function))
+
+(define-compiler-macro fn+ (&rest functions)
+  (labels ((sharp-quoted-p (x)
+	     (and (listp x)
+		  (eql (first x) 'function)
+		  (symbolp (second x)))))
+    `(lambda (x) ,(reduce #'(lambda (fun arg)
+			      (if (sharp-quoted-p fun)
+				  (list (second fun) arg)
+				  (list 'funcall fun arg)))
+			  functions
+			  :initial-value 'x
+			  :from-end t))))
+
+(defun range (end &optional (start 0))
+  (loop :for i :from start :upto end :collect i))
