@@ -50,10 +50,10 @@
             `(lambda ,args ,@body))
         (error "non sequential args"))))
 
-(defmacro λ (&body body) 
-  (if (consp (first body))
-      `(lambda ,(first body) ,@(rest body))
-      `(fn% ,body)))
+;; (defmacro λ (&body body) 
+;;   (if (consp (first body))
+;;       `(lambda ,(first body) ,@(rest body))
+;;       `(fn% ,body)))
 
 
 ;; Partial Application
