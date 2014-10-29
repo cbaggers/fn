@@ -140,3 +140,10 @@ and then calling the next one with the primary value of the last."
 
 (defun range (end &optional (start 0))
   (loop :for i :from start :upto end :collect i))
+
+
+(defun lambda-reader (stream char)
+   (declare (ignore char))
+   (list 'fn% (read stream t nil t)))
+
+(set-macro-character #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader)
