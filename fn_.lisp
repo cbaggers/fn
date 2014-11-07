@@ -50,39 +50,16 @@
             `(lambda ,args ,@body))
         (error "non sequential args"))))
 
-;; (defmacro λ (&body body) 
-;;   (if (consp (first body))
-;;       `(lambda ,(first body) ,@(rest body))
-;;       `(fn% ,body)))
-
-
 ;; Partial Application
 ;; -------------------
 ;; {TODO} Need to profule multiple-value-call to see if it is any better 
 ;;        than append
 
-(defun λ_ (function &rest args)
-  "Partially apply args to function"
-  (declare (optimize (speed 3) (safety 1) (debug 1))
-           (function function))
-  (λ (&rest rest-of-the-args)
-     (multiple-value-call function
-       (values-list args) 
-       (values-list rest-of-the-args))))
-
-(define-compiler-macro λ_ (function &rest args)
-  `(let ((function ,function))
-     (declare (optimize (speed 3) (safety 1) (debug 1))
-              (function function))
-     (λ (&rest rest-of-the-args)
-        (declare (optimize (speed 3) (safety 1) (debug 1)))
-        (apply ,@args rest-of-the-args))))
-
 (defun fn_ (function &rest args)
   "Partially apply args to function"
   (declare (optimize (speed 3) (safety 1) (debug 1))
            (function function))
-  (λ (&rest rest-of-the-args)
+  (lambda (&rest rest-of-the-args)
      (multiple-value-call function
        (values-list args) 
        (values-list rest-of-the-args))))
@@ -91,24 +68,15 @@
   `(let ((function ,function))
      (declare (optimize (speed 3) (safety 1) (debug 1))
               (function function))
-     (λ (&rest rest-of-the-args)
+     (lambda (&rest rest-of-the-args)
         (declare (optimize (speed 3) (safety 1) (debug 1)))
         (apply ,@args rest-of-the-args))))
-
-(defun λ_r (function &rest args)
-  "Partially apply args to function"
-  (declare (optimize (speed 3) (safety 1) (debug 1))
-           (function function))
-  (λ (&rest rest-of-the-args)
-     (multiple-value-call function
-       (values-list rest-of-the-args)
-       (values-list args) )))
 
 (defun fn_r (function &rest args)
   "Partially apply args to function"
   (declare (optimize (speed 3) (safety 1) (debug 1))
            (function function))
-  (λ (&rest rest-of-the-args)
+  (lambda (&rest rest-of-the-args)
      (multiple-value-call function
        (values-list rest-of-the-args)
        (values-list args) )))
