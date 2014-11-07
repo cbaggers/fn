@@ -88,7 +88,8 @@ and then calling the next one with the primary value of the last."
   (declare (optimize (speed 3) (safety 1) (debug 1)))
   (reduce (lambda (f g)
             (lambda (&rest arguments)
-              (declare (dynamic-extent arguments))
+              (declare (dynamic-extent arguments)
+                       (function f g))
               (funcall f (apply g arguments))))
           more-functions
           :initial-value function))
