@@ -86,6 +86,9 @@
 arguments to to each in turn, starting from the rightmost of MORE-FUNCTIONS,
 and then calling the next one with the primary value of the last."
   (declare (optimize (speed 3) (safety 1) (debug 1)))
+  (unless (and (functionp function)
+               (every #'functionp more-functions))
+    (error "fn+ can only compose functions"))
   (reduce (lambda (f g)
             (lambda (&rest arguments)
               (declare (dynamic-extent arguments)
