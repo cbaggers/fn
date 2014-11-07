@@ -143,7 +143,15 @@ and then calling the next one with the primary value of the last."
 
 
 (defun lambda-reader (stream char)
-   (declare (ignore char))
-   (list 'fn% (read stream t nil t)))
+  (declare (ignore char))
+  (let* ((body (read stream t nil t))         
+         (body (if (and (= 1 (length body))
+                        (or (and (symbolp (first body))
+                               (or (equal (symbol-name (first body)) "%")
+                                   (equal (symbol-name (first body)) "%@")))
+                            (constantp (first body))))
+                   (first body)
+                   body)))
+    (list 'fn% body)))
 
 (set-macro-character #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader)
