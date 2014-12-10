@@ -15,8 +15,10 @@
     (nreverse list)))
 
 (defun walk-for-% (form)
-  (cond ((atom form) (when (eql #\% (aref (format nil "~a" form) 0))
-                       form))
+  (cond ((atom form) (let ((strnd (format nil "~a" form)))
+                       (when (and (symbolp form)
+                                  (eql #\% (aref strnd 0)))
+                         form)))
         ((eql (first form) 'quote) nil)
         (t (remove nil (mapcar #'walk-for-% form)))))
 
