@@ -5,7 +5,8 @@
   :description "Some macros for lambda brevity"
   :author "Chris Bagley <techsnuffle@gmail.com>"
   :license "Public Domain"
-  :depends-on (#:macroexpand-dammit)
+  :depends-on (#:macroexpand-dammit
+               #:named-readtables)
   :components ((:file "package")
                (:file "fn_")))
 

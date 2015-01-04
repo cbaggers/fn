@@ -129,4 +129,6 @@ and then calling the next one with the primary value of the last."
                    body)))
     (list 'fn% body)))
 
-(set-macro-character #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader)
+(named-readtables:defreadtable fn_lambda
+  (:merge :standard)
+  (:macro-char #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader t))
