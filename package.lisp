@@ -2,5 +2,5 @@
 
 (defpackage #:fn_
   (:use #:cl)
-  (:export :fn% :fn_ :fn_r :fn+))
+  (:export :fn% :fn_ :fn_r :fn+ :fn_lambda))
 
