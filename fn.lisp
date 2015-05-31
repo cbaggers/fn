@@ -1,48 +1,46 @@
-
 ;;;; fn_.lisp
 
-(in-package #:fn_)
+(in-package #:fn)
 
-(defun flatten (tree)
-  (let (list)
-    (labels ((traverse (subtree)
-               (when subtree
-                 (if (consp subtree)
-                     (progn
-                       (traverse (car subtree))
-                       (traverse (cdr subtree)))
-                     (push subtree list)))))
-      (traverse tree))
-    (nreverse list)))
-
-(defmacro fn% (form &environment env)
-  (let ((args
-         (sort 
-          (remove-duplicates
-           (remove
-            nil
-            (flatten
-             (filter-tree 
-              (macroexpand-dammit form env)
-              (lambda (x)
-                (and (symbolp x) 
-                     (char= #\_ (aref (symbol-name x) 0))))))))
-          #'string<))
-        (g (gensym)))
-    (let ((at-arg (find "_@" args :test #'equal :key #'symbol-name))
-          (args (remove "_@" args :test #'equal :key #'symbol-name)))
-      (when args
-        (unless (every #'valid-_-name args)
-          (error "invalid underscore-arg name in ~s. Names must start with _ and be followed only by numbers indicating argument position." args))
-        (unless (= (normalized-arg-count args) (length args))
-          (error "The argument list ~a has holes. This is considered a malformed arg list" args)))
-      (cond ((and at-arg args)
-             `(lambda (&rest ,at-arg)
-                (destructuring-bind (,@args &rest ,g) ,at-arg
-                  (declare (ignore ,g))
-                  ,form)))
-            (at-arg `(lambda (&rest ,at-arg) ,form))
-            (t `(lambda ,args ,form))))))
+(defmacro fn* (form &environment env)
+  (labels ((flatten (tree)
+             (let (list)
+               (labels ((traverse (subtree)
+                          (when subtree
+                            (if (consp subtree)
+                                (progn
+                                  (traverse (car subtree))
+                                  (traverse (cdr subtree)))
+                                (push subtree list)))))
+                 (traverse tree))
+               (nreverse list))))
+    (let ((args
+           (sort 
+            (remove-duplicates
+             (remove
+              nil
+              (flatten
+               (filter-tree 
+                (macroexpand-dammit form env)
+                (lambda (x)
+                  (and (symbolp x) 
+                       (char= #\_ (aref (symbol-name x) 0))))))))
+            #'string<))
+          (g (gensym)))
+      (let ((at-arg (find "_@" args :test #'equal :key #'symbol-name))
+            (args (remove "_@" args :test #'equal :key #'symbol-name)))
+        (when args
+          (unless (every #'valid-_-name args)
+            (error "invalid underscore-arg name in ~s. Names must start with _ and be followed only by numbers indicating argument position." args))
+          (unless (= (normalized-arg-count args) (length args))
+            (error "The argument list ~a has holes. This is considered a malformed arg list" args)))
+        (cond ((and at-arg args)
+               `(lambda (&rest ,at-arg)
+                  (destructuring-bind (,@args &rest ,g) ,at-arg
+                    (declare (ignore ,g))
+                    ,form)))
+              (at-arg `(lambda (&rest ,at-arg) ,form))
+              (t `(lambda ,args ,form)))))))
 
 (defun normalized-arg-count (x)
   (let ((x (subseq (symbol-name (car (last x)))
@@ -66,10 +64,10 @@
 
 ;; Partial Application
 ;; -------------------
-;; {TODO} Need to profule multiple-value-call to see if it is any better
+;; {TODO} Need to profile multiple-value-call to see if it is any better
 ;;        than append
 
-(defun fn_ (function &rest args)
+(defun fn~ (function &rest args)
   "Partially apply args to function"
   (declare (optimize (speed 3) (safety 1) (debug 1))
            (function function))
@@ -78,7 +76,7 @@
       (values-list args)
       (values-list rest-of-the-args))))
 
-(define-compiler-macro fn_ (function &rest args)
+(define-compiler-macro fn~ (function &rest args)
   (let ((gfunc (gensym "function")))
     `(let ((,gfunc ,function))
        (declare (optimize (speed 3) (safety 1) (debug 1))
@@ -87,7 +85,7 @@
          (declare (optimize (speed 3) (safety 1) (debug 1)))
          (apply ,gfunc ,@args rest-of-the-args)))))
 
-(defun fn_r (function &rest args)
+(defun fn~r (function &rest args)
   "Partially apply args to function"
   (declare (optimize (speed 3) (safety 1) (debug 1))
            (function function))
@@ -129,8 +127,8 @@ and then calling the next one with the primary value of the last."
 (defun lambda-reader (stream char)
   (declare (ignore char))
   (let* ((body (read stream t nil t)))
-    (list 'fn% body)))
+    (list 'fn* body)))
 
-(named-readtables:defreadtable fn_lambda
+(named-readtables:defreadtable fn-reader
     (:merge :standard)
   (:macro-char #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader t))

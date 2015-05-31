@@ -1,6 +1,6 @@
 ;;;; package.lisp
 
-(defpackage #:fn_
+(defpackage #:fn
   (:use #:cl #:macroexpand-dammit)
-  (:export :fn% :fn_ :fn_r :fn+ :fn_lambda))
+  (:export :fn% :fn~ :fn~r :fn+ :fn-reader))
 
