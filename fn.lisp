@@ -1,4 +1,4 @@
-;;;; fn_.lisp
+;;;; fn.lisp
 
 (in-package #:fn)
 

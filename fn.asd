@@ -1,6 +1,6 @@
-;;;; fn_.asd
+;;;; fn.asd
 
-(asdf:defsystem #:fn_
+(asdf:defsystem #:fn
   :serial t
   :description "Some macros for lambda brevity"
   :author "Chris Bagley <techsnuffle@gmail.com>"
@@ -8,5 +8,5 @@
   :depends-on (#:macroexpand-dammit
                #:named-readtables)
   :components ((:file "package")
-               (:file "fn_")))
+               (:file "fn")))
 
