@@ -2,7 +2,12 @@
 
 (in-package #:fn)
 
+(defvar *stop-on-symbols* '(quote lambda))
+
 (defmacro fn* (form &environment env)
+  (fn*-internals form env))
+
+(defun fn*-internals (form env)
   (labels ((flatten (tree)
              (let (list)
                (labels ((traverse (subtree)
@@ -15,16 +20,17 @@
                  (traverse tree))
                (nreverse list))))
     (let ((args
-           (sort 
+           (sort
             (remove-duplicates
              (remove
               nil
               (flatten
-               (filter-tree 
+               (filter-tree
                 (macroexpand-dammit form env)
                 (lambda (x)
-                  (and (symbolp x) 
-                       (char= #\_ (aref (symbol-name x) 0))))))))
+                  (and (symbolp x)
+                       (char= #\_ (aref (symbol-name x) 0))))
+                *stop-on-symbols*))))
             #'string<))
           (g (gensym)))
       (let ((at-arg (find "_@" args :test #'equal :key #'symbol-name))
@@ -54,13 +60,14 @@
     (and (char= (aref x 0) #\_)
          (every #'digit-char-p (subseq x 1)))))
 
-(defun filter-tree (tree predicate &optional (stop-on-quote t))
+(defun filter-tree (tree predicate &optional (stop-on nil))
   (if (atom tree)
-      (when (and tree (funcall predicate tree)) 
+      (when (and tree (funcall predicate tree))
         tree)
-      (unless (and stop-on-quote (eq 'cl:quote (first tree)))
-        (cons (filter-tree (first tree) predicate)
-              (filter-tree (rest tree) predicate)))))
+      (unless (and (symbolp (first tree))
+                   (member (first tree) stop-on :test #'eq))
+        (cons (filter-tree (first tree) predicate stop-on)
+              (filter-tree (rest tree) predicate stop-on)))))
 
 ;; Partial Application
 ;; -------------------
@@ -127,7 +134,7 @@ and then calling the next one with the primary value of the last."
 (defun lambda-reader (stream char)
   (declare (ignore char))
   (let* ((body (read stream t nil t)))
-    (list 'fn* body)))
+    (fn*-internals body nil)))
 
 (named-readtables:defreadtable fn-reader
     (:merge :standard)
