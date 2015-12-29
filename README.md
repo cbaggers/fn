@@ -12,18 +12,18 @@ A couple of lambda shorthand macros. Their goal is to be used in cases where the
 
 The λ reader macro is gives you the clojure like syntax.
 
-    λ(+ _ _)  -->  (lambda (_) (+ _ _)) 
+    λ(+ _ _)  -->  (lambda (_) (+ _ _))
 
     λ(+ _ _1)  -->  (lambda (_ _1) (+ _ _1))
 
-    λ(subseq _@ 0 2)  -->  (lambda (&rest _@) (subseq _@ 0 2)) 
+    λ(subseq _@ 0 2)  -->  (lambda (&rest _@) (subseq _@ 0 2))
 
-I REALLY dont like adding reader macros, but as λ is such a rarely use character I dont feel too bad about it. 
+I REALLY dont like adding reader macros, but as λ is such a rarely used character I dont feel too bad about it.
 
 
 Finally `fn~` and `fn~r` are functions for partial application.
 fn+ is for composing functions
-        
+
 Emacs
 -----
 If you are using emacs and want Meta-l to write the λ symbol, add the following to your .emacs file
