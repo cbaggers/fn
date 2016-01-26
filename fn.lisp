@@ -99,7 +99,7 @@
   (lambda (&rest rest-of-the-args)
     (multiple-value-call function
       (values-list rest-of-the-args)
-      (values-list args) )))
+      (values-list args))))
 
 (defun fn+ (function &rest more-functions)
   "Returns a function composed of FUNCTION and MORE-FUNCTIONS that applies its
