@@ -29,3 +29,18 @@ Emacs
 If you are using emacs and want Meta-l to write the λ symbol, add the following to your .emacs file
 
     (global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))
+
+Some curiosities
+----------------
+
+`λ_` the identity function
+
+	(mapcar λ_ '(1 2 3)) -> (1 2 3)
+
+`λ``(1 ,_ 3)` list building functions
+
+	(mapcar λ`(1 ,_ 3) '(1 2 3)) -> ((1 1 3) (1 2 3) (1 3 3))
+
+`λ1` a function that takes no args an returns 1
+
+    (funcall λpi) -> 3.141592653589793d0
