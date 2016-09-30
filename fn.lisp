@@ -139,3 +139,7 @@ and then calling the next one with the primary value of the last."
 (named-readtables:defreadtable fn-reader
     (:merge :standard)
   (:macro-char #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader t))
+
+(named-readtables:defreadtable :fn.reader
+    (:merge :standard)
+  (:macro-char #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader t))
