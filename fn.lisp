@@ -110,10 +110,10 @@ and then calling the next one with the primary value of the last."
                (every #'functionp more-functions))
     (error "fn+ can only compose functions"))
   (reduce (lambda (f g)
+            (declare (type function f g))
             (lambda (&rest arguments)
               (declare (optimize (speed 3) (safety 1) (debug 1))
-                       (dynamic-extent arguments)
-                       (function f g))
+                       (dynamic-extent arguments))
               (funcall f (apply g arguments))))
           more-functions
           :initial-value function))
