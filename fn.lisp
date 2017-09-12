@@ -26,7 +26,7 @@
               nil
               (flatten
                (filter-tree
-                (macroexpand-dammit form env)
+                (macroexpand-all form env)
                 (lambda (x)
                   (and (symbolp x)
                        (char= #\_ (aref (symbol-name x) 0))))
