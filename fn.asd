@@ -6,7 +6,7 @@
   :license "Public Domain"
   #+asdf-unicode :encoding #+asdf-unicode :utf-8
   :serial t
-  :depends-on (#:macroexpand-dammit
-               #:named-readtables)
+  :depends-on (#:named-readtables)
   :components ((:file "package")
+               (:file "mad")
                (:file "fn")))
