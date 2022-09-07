@@ -136,12 +136,12 @@ and then calling the next one with the primary value of the last."
   (let* ((body (read stream t nil t)))
     (fn*-internals body nil)))
 
-#-abcl
+#-(or lispworks abcl)
 (named-readtables:defreadtable fn-reader
     (:merge :standard)
   (:macro-char #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader t))
 
-#-abcl
+#-(or lispworks abcl)
 (named-readtables:defreadtable :fn.reader
     (:merge :standard)
 	(:macro-char #\GREEK_SMALL_LETTER_LAMDA #'lambda-reader t))
