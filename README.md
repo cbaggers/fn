@@ -10,7 +10,7 @@ A couple of lambda shorthand macros. Their goal is to be used in cases where the
     (fn* (subseq _@ 0 2))  -->  (lambda (&rest _@) (subseq _@ 0 2))
 
 
-The λ reader macro is gives you the clojure like syntax.
+The λ reader macro gives you the clojure like syntax.
 
     λ(+ _ _)  -->  (lambda (_) (+ _ _))
 
@@ -20,6 +20,9 @@ The λ reader macro is gives you the clojure like syntax.
 
 I REALLY dont like adding reader macros, but as λ is such a rarely used character I dont feel too bad about it.
 
+To enable this reader macro, evaluate the following code:
+
+    (named-readtables:in-readtable :fn.reader)
 
 Finally `fn~` and `fn~r` are functions for partial application.
 fn+ is for composing functions
